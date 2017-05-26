@@ -412,7 +412,7 @@ public class MainForm extends JFrame implements Form{
 			_comLabel.setText("Communication: Error");
 			_fileLabel.setText("File Submission: Off");
 			this.updateSampleListFile(fileToSend, "error");
-			//_samplesToRun.add(_samplesToRun.remove(0));	jmb disabled
+			//_samplesToRun.add(_samplesToRun.remove(0));
 			this.checkSampleListFile();
 			//Send an email if cannot connect
 			//TODO Uncomment the mail stuff when ready.
