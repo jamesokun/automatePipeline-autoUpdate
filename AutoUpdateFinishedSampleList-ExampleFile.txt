@@ -1,3 +1,3 @@
-#TO USE: Change name of file to match the filename in the config XML, and place it in the same file path that the autoUpdate jar is running from
+#TO USE: Change name of file to match the filename in the config XML, and place it in the same file path that the autoUpdate jar is running from...ALSO, remove this line
 #D:\Xcalibur\Data\Salomon\ThisIsASampleThatHasAlreadyBeenRun:THMRAW.raw+QE+M:UniProt_Human_FT_alkyl_oxid_phos_tight_HCD.par+Zhuo+dd9_auto3HRshallow_FTMSLTMSMS_Optimal.meth+SQ:0
 D:\Xcalibur\Data\Salomon\ThisIsASampleThatHasntBeenRunYet:THMRAW.raw+QE+M:UniProt_Human_FT_alkyl_oxid_phos_tight_HCD.par+Zhuo+dd9_auto3HRshallow_FTMSLTMSMS_Optimal.meth+SQ:0
