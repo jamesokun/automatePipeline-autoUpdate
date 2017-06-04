@@ -20,9 +20,6 @@ import javax.swing.JPanel;
  * configuration file, and also sets the 
  * mainForm to "visible" once the file
  * is selected.
- * 
- * @authors jbelmont, njooma
- *
  */
 @SuppressWarnings("serial")
 public class SelectConfig extends JFrame {
