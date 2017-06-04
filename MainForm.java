@@ -557,9 +557,6 @@ public class MainForm extends JFrame implements Form{
 	 * Open Sample List button (openButton). It opens
 	 * the finishedSampleList file in the operating 
 	 * system's default text editing application.
-	 * 
-	 * @author njooma
-	 *
 	 */
 	private class OpenListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -584,9 +581,6 @@ public class MainForm extends JFrame implements Form{
 	 * This class performs the action of the Rerun Button.
 	 * It gets the selected rows from the queue and adds
 	 * them to the sample list so that they will be run again.
-	 * 
-	 * @author njooma
-	 *
 	 */
 	private class RerunSampleListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
