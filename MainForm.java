@@ -39,10 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-/**
- * @authors jbelmont, njooma
- *
- */
 @SuppressWarnings("serial")
 public class MainForm extends JFrame implements Form{
 
