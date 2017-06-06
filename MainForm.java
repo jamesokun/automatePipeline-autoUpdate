@@ -195,6 +195,11 @@ public class MainForm extends JFrame implements Form{
 	/**
 	 * This method loads the necessary info into the application.
 	 */
+	
+	/**
+	 * sets config, look in SelectConfig class
+	 * 
+	 */
 	public void loadForm() {
 		new SelectConfig().setConfig(this);
 		while (!this.isParamSet()) {
