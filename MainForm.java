@@ -208,6 +208,8 @@ public class MainForm extends JFrame implements Form{
 		this.setVisible(true);
 		
 		//Load parameters
+		//new Params object
+		//parsing xml file to get specific info (i.e. port number, etc.) 
 		_params = new Params(this);
 		boolean paramsLoaded = _params.loadParam(this.getParamFile());
 
@@ -220,6 +222,7 @@ public class MainForm extends JFrame implements Form{
 		_samplesToRun = new Vector<String>();
 		if (paramsLoaded) {
 			//Find the finished sample list
+			//second argument is default value if the key is not found
 			_sampleListPath = Paths.get(this.getAppPath(), _params.getClientParam("SAMPLE_LIST", "N/A"));
 			if (Files.notExists(_sampleListPath)) {
 				_sampleListPath = Paths.get(this.getAppPath(), "finishedSampleList.txt");
@@ -236,7 +239,8 @@ public class MainForm extends JFrame implements Form{
 		}
 		
 		this.buildSampleList(); //Read finished sample list and build table
-		
+		//log is the visibile log to the user
+		//checking periodically if there are samples to run 
 		_statusArea.append("done!\n");
 		this.log("Sequest Host: " + _params.getGlobalParam("SEQUEST", "localhost"));
 		while (true) {
@@ -250,6 +254,7 @@ public class MainForm extends JFrame implements Form{
 				}
 			}
 			try {
+				//sleeps for a minute before trying again
 				Thread.sleep(60000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -269,19 +274,24 @@ public class MainForm extends JFrame implements Form{
 	 */
 	public void buildSampleList() {
 		try {
+			//first, clears out list of existing samples to run
 			_samplesToRun.clear();
 			List<String> samples = Files.readAllLines(_sampleListPath, StandardCharsets.UTF_8);
+			//2d array that is used to populate the list in gui, status and 
 			_sampleList = new String[samples.size()][2];
 			for (int i=0; i<samples.size(); i++) {
 				String line = samples.get(i);
 				line = line.trim();
 				if (!line.equals("") && !line.equals(null)) {
 					//For error samples
+					//not important
 					if (line.startsWith("##")) {
 						_sampleList[i][0] = "Waiting to run...";
 						_samplesToRun.add(line.substring(2));
 					}
 					//For new samples
+					//more important, if begins with a # we know that it is done, otherwise we
+					//populate the array with the info needed. 
 					else if (!line.startsWith("#")) {
 						_sampleList[i][0] = "Waiting to run...";
 						_samplesToRun.add(line);
@@ -328,25 +338,34 @@ public class MainForm extends JFrame implements Form{
 		int errorCount = 0;
 		try {
 			//Connect the socket to AutoSearch and open I/O
+			//trying to open a socket on sequest
+			//goes back into _params to get port, and other info needed for socket opening
 			sock = new Socket(_params.getGlobalParam("SEQUEST", "sequest.biomed.brown.edu"), Integer.parseInt(_params.getGlobalParam("SEQUEST.Port", "666")));
 			out = new ObjectOutputStream(sock.getOutputStream());
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			//getting ready to send info to sedquest
 			System.out.println("Sending 'Ready?' to Sequest");
 			out.writeUTF("Ready?"+_params.getIdentity());
 			out.flush();
+			//wait for a reply from sequest after flush
 			_comLabel.setText("Communication: ON");
 			String message;
 			System.out.println("I'm checking for a message....");
 			while ((message = in.readLine()) != null) {
 				System.out.println("message from autosearch:     " + message);
 				//Send file if AutoSearch is ready...
+				//sequest is ready...
 				if (message.equalsIgnoreCase("ready")) {
 					_sequestLabel.setText("Sequest: Off");
 					_fileLabel.setText("File Submission: ON");
+					//writes to log to let user know that a sample is being sent
 					this.log("Sending sample: " + fileToSend.substring(fileToSend.lastIndexOf("\\")+1, fileToSend.indexOf("+")));
 					//Send files to AutoSearch
+					//get substring that ends with the first plus and all elements of that string are plus delimited to separate info, such as ms info, data ownership, etc.
 					String sequestSend = fileToSend.substring(0, fileToSend.indexOf("+"));
 					sequestSend = sequestSend.substring(0, sequestSend.lastIndexOf(":"));
+					//pushing files to sequest using pushFiles method
+					//errorCount is preventing autoUpdate from pushing more than 20 files
 					while(!this.pushFiles(sequestSend, out) && errorCount<20){
 						if (errorCount++ ==20) {
 							throw(new IOException());
